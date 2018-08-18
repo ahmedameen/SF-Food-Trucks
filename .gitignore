@@ -102,3 +102,10 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+# python virtual environment
+/flaskEnv
+
+# visual studio project files
+/*.sln
+/*.pyproj
