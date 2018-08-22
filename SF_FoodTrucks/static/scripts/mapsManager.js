@@ -3,9 +3,11 @@ sfLng = -122.431297
 var map;
 var markers = [];
 var currentLocation = { lat: sfLat, lng: sfLng };
+var infoWindow;
 
-foodTruckIconURL = '/static/icons/food-truck-32.png'
-foodCartIconURL = '/static/icons/food-cart-32.png'
+var foodTruckIconURL = '/static/icons/food-truck-32.png';
+var foodCartIconURL = '/static/icons/food-cart-32.png';
+
 function initMap() {
     var mapOptions = {
         center: new google.maps.LatLng(sfLat, sfLng),
@@ -23,15 +25,17 @@ function initMap() {
     map.addListener('bounds_changed', function () {
         searchBox.setBounds(map.getBounds());
     });
+    infoWindow = new google.maps.InfoWindow({ maxWidth : '250'});
 }
 
-function addMarker(location, locationTitle, iconURL, OnClickEventHandler) {
+function addMarker(location, locationTitle, iconURL, markerInfo, OnClickEventHandler) {
     var marker = new google.maps.Marker({
         position: location,
         map: map,
         title: locationTitle,
         icon: iconURL
     });
+    marker.info = markerInfo;
     marker.addListener('click', OnClickEventHandler);
     markers.push(marker);
 }
@@ -73,6 +77,14 @@ function addMarkersToFoodTruckLocations(data) {
         var truckLocation = { lat: trucks[i].location.coordinates[1], lng: trucks[i].location.coordinates[0] };
         var iconURL = trucks[i].facilitytype == 'Push Cart' ? foodCartIconURL : foodTruckIconURL;
         var truckName = trucks[i].applicant;
-        addMarker(truckLocation, truckName, iconURL);
+        var markerInfo = '<strong>Facility Owner: </strong>' + trucks[i].applicant + '<br>'
+            + '<strong>Facility Type: </strong>' + trucks[i].facilitytype + '<br>'
+            + '<strong>Facility Address: </strong>' + trucks[i].address + '<br>'
+            + '<strong>Food Items: </strong>' + trucks[i].fooditems;
+        addMarker(truckLocation, truckName, iconURL, markerInfo, handleMarkerClickEvent);
     }
+}
+
+function handleMarkerClickEvent() {
+    infoWindow.setContent(this.info); infoWindow.open(this.getMap(), this);
 }
