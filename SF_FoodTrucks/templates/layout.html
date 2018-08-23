@@ -28,6 +28,13 @@
                     <li><a href="{{ url_for('home') }}">Home</a></li>
                     <li><a href="{{ url_for('about') }}">About</a></li>
                     <li><a href="{{ url_for('contact') }}">Contact</a></li>
+                    {% if g.user %}
+                    <li><a href="{{ url_for('home') }}"> Hi {{ g.user['username'] }}!</a></li>
+                    <li><a href="{{ url_for('auth.logout') }}">Log Out</a></li>
+                    {% else %}
+                    <li><a href="{{ url_for('auth.register') }}">Register</a></li>
+                    <li><a href="{{ url_for('auth.login') }}">Log In</a></li>
+                    {% endif %}
                 </ul>
             </div>
         </div>
