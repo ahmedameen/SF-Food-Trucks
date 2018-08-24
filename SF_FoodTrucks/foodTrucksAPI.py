@@ -1,12 +1,13 @@
-from SF_FoodTrucks import app
 import requests
-from flask import request
+from flask import request, current_app, Blueprint
+
+foodTrucksBP = Blueprint('foodtrucks', __name__, url_prefix='/foodtrucks')
 
 
-@app.route('/GetFoodTrucksNearLocation', methods=['GET'])
+@foodTrucksBP.route('/GetFoodTrucksNearLocation', methods=['GET'])
 def GetFoodTrucksNearLocation():
     apiEndPoint = 'https://data.sfgov.org/resource/6a9r-agq8.json'
-    appToken = app.config['SF_APP_TOKEN']
+    appToken = current_app.config['SF_APP_TOKEN']
     locationLat = request.args.get('locationLat', type=float)
     locationLng = request.args.get('locationLng', type=float)
     maxDistanceInMeters = request.args.get('maxDistanceInMeters', type=float)
@@ -18,4 +19,16 @@ def GetFoodTrucksNearLocation():
     if limit is not None:
         params['$limit'] = limit
     req = requests.get(apiEndPoint+query, params)
+    return req.content, 200
+
+
+@foodTrucksBP.route('/GetFoodTruck', methods=['GET'])
+def GetFoodTruck():
+    apiEndPoint = 'https://data.sfgov.org/resource/6a9r-agq8.json'
+    appToken = current_app.config['SF_APP_TOKEN']
+    truckID = request.args.get('truckID', type=int)
+    if truckID is None:
+        return 'Bad request, missing or wrong passed arguments. Please review the API documentation for the correct format.', 400
+    params = {'$$app_token': appToken, 'objectid': truckID}
+    req = requests.get(apiEndPoint, params)
     return req.content, 200

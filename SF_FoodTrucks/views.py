@@ -4,10 +4,13 @@ Routes and views for the flask application.
 
 from datetime import datetime
 from flask import render_template
-from SF_FoodTrucks import app
+from flask import current_app, Blueprint
 
-@app.route('/')
-@app.route('/home')
+viewsBP = Blueprint('views', __name__)
+
+
+@viewsBP.route('/')
+@viewsBP.route('/home')
 def home():
     """Renders the home page."""
     return render_template(
@@ -15,12 +18,14 @@ def home():
         title='Home Page',
     )
 
-@app.route('/contact')
+
+@viewsBP.route('/contact')
 def contact():
     """Renders the contact page."""
     return render_template('contact.html')
 
-@app.route('/about')
+
+@viewsBP.route('/about')
 def about():
     """Renders the about page."""
     return render_template(
