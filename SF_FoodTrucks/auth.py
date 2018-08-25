@@ -25,8 +25,8 @@ def register():
 
         if error is None:
             db.execute(
-                'INSERT INTO users (username, password) VALUES (?, ?)',
-                (username, generate_password_hash(password))
+                'INSERT INTO users (username, password, trucksLikes, trucksDislikes) VALUES (?, ?, ?, ?)',
+                (username, generate_password_hash(password), '', '')
             )
             db.commit()
             return redirect(url_for('auth.login'), 302)
