@@ -29,9 +29,9 @@ def register():
                 (username, generate_password_hash(password))
             )
             db.commit()
-            return redirect(url_for('auth.login'))
+            return redirect(url_for('auth.login'), 302)
 
-        flash(error)
+        flash(error, 'error')
 
     return render_template('auth/register.html')
 
@@ -55,9 +55,9 @@ def login():
         if error is None:
             session.clear()
             session['userID'] = user['ID']
-            return redirect(url_for('views.home'))
+            return redirect(url_for('views.home'), 302)
 
-        flash(error)
+        flash(error, 'error')
 
     return render_template('auth/login.html')
 
@@ -76,4 +76,4 @@ def loadLoggedInUser():
 @authBP.route('/logout')
 def logout():
     session.clear()
-    return redirect(url_for('views.home'))
+    return redirect(url_for('views.home'), 302)
