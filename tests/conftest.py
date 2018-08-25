@@ -26,12 +26,12 @@ def auth(client):
 def initDBForTesting():
     db.initDB()
     database = db.getDB()
-    usernames = ['ahmed', 'ameen', 'elfiky']
-    passwords = ['ahmedPassword', 'ameenPassword', 'elfikyPassword']
+    usernames = ['ahmed', 'ameen', 'mohamed', 'elfiky']
+    passwords = ['ahmedPassword', 'ameenPassword', 'mohamedPassword', 'elfikyPassword']
     i = 0
     for i in range(len(usernames)):
-        database.execute('INSERT INTO Users (username,password) VALUES (?,?)',
-                         (usernames[i], generate_password_hash(passwords[i])))
+        database.execute('INSERT INTO Users (username,password, trucksLikes, trucksDislikes) VALUES (?,?,?,?)',
+                         (usernames[i], generate_password_hash(passwords[i]), '', ''))
     database.commit()
     return
 
