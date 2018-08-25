@@ -77,14 +77,76 @@ function addMarkersToFoodTruckLocations(data) {
         var truckLocation = { lat: trucks[i].location.coordinates[1], lng: trucks[i].location.coordinates[0] };
         var iconURL = trucks[i].facilitytype == 'Push Cart' ? foodCartIconURL : foodTruckIconURL;
         var truckName = trucks[i].applicant;
-        var markerInfo = '<strong>Facility Owner: </strong>' + trucks[i].applicant + '<br>'
-            + '<strong>Facility Type: </strong>' + trucks[i].facilitytype + '<br>'
-            + '<strong>Facility Address: </strong>' + trucks[i].address + '<br>'
-            + '<strong>Food Items: </strong>' + trucks[i].fooditems;
+        allReviews = $.ajax({
+          method: 'GET',
+          url: '/reviews/GetTruckReviews?truckID='+trucks[i].objectid,
+          async: false
+        })
+        allReviewsJson = JSON.parse(allReviews.responseText)
+        trucks[i].likes = allReviewsJson.likes
+        trucks[i].dislikes = allReviewsJson.dislikes
+
+        userReview = $.ajax({
+          method: 'GET',
+          url: '/reviews/TruckReview?truckID='+trucks[i].objectid,
+          async: false
+        })
+
+        if (userReview.status != 200)
+        {
+           trucks[i].userReview = 'Empty'
+        }
+        else
+        {
+            userReviewJson = JSON.parse(userReview.responseText)
+            trucks[i].userReview = userReviewJson.userReview
+        }
+
+        var markerInfo = trucks[i];
+
         addMarker(truckLocation, truckName, iconURL, markerInfo, handleMarkerClickEvent);
     }
 }
 
 function handleMarkerClickEvent() {
-    infoWindow.setContent(this.info); infoWindow.open(this.getMap(), this);
+    truckID = this.info.objectid;
+    windowContent = '<strong>Facility Owner: </strong>' + this.info.applicant + '<br>'
+            + '<strong>Facility Type: </strong>' + this.info.facilitytype + '<br>'
+            + '<strong>Facility Address: </strong>' + this.info.address + '<br>'
+            + '<strong>Food Items: </strong>' + this.info.fooditems + '<br>'
+            + '<strong>Working Hours: </strong>' + this.info.dayshours + '<br>'
+            + '<strong>Likes: </strong>' + this.info.likes + ' ' +'<strong>Dislikes: </strong>' + this.info.dislikes + '<br>'
+            + '<input id = "reviewBtn" type="button" value="Like" onclick="func('+truckID+');"/>';
+            infoWindow.setContent(windowContent);
+    infoWindow.open(this.getMap(), this);
+
+    if (this.info.userReview == 'Like')
+    {
+        $('#reviewBtn').attr('value', 'Dislike')
+        $('#reviewBtn').attr('style', 'color:red')
+    }
+    else if (this.info.userReview == 'Dislike')
+    {
+        $('#reviewBtn').attr('value', 'Like')
+        $('#reviewBtn').attr('style', 'color:greed')
+    }
+
+
+}
+
+function func(truckID){
+btnVal = $('#reviewBtn').attr('value')
+$.post('/reviews/TruckReview?truckID='+truckID, data={'review':btnVal}, toggleReviewButton).fail(function() {alert( "Please log in before submitting your review." );})
+}
+
+function toggleReviewButton(){
+btnVal = $('#reviewBtn').attr('value')
+if (btnVal == 'Like'){
+$('#reviewBtn').attr('value', 'Dislike')
+$('#reviewBtn').attr('style', 'color:red')
+}
+else{
+$('#reviewBtn').attr('value', 'Like')
+$('#reviewBtn').attr('style', 'color:green')
+}
 }
