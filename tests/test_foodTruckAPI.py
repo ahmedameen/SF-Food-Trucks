@@ -1,13 +1,5 @@
 #
-import pytest
-from flask import json, url_for
-from SF_FoodTrucks import create_app
-
-@pytest.fixture
-def client():
-    app = create_app(testing=True)
-    client = app.test_client()
-    return client
+from flask import json
 
 #Test a normal request
 def test_normalRequest(client):
