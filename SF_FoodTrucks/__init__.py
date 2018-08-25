@@ -2,7 +2,7 @@
 The flask application package.
 """
 from flask import Flask
-from SF_FoodTrucks import db, auth, views, foodTrucksAPI
+from SF_FoodTrucks import db, auth, views, foodTrucksAPI, trucksReviewsAPI
 
 
 def create_app(testing=False):
@@ -14,6 +14,7 @@ def create_app(testing=False):
     app.register_blueprint(auth.authBP)
     app.register_blueprint(views.viewsBP)
     app.register_blueprint(foodTrucksAPI.foodTrucksBP)
+    app.register_blueprint(trucksReviewsAPI.reviewsBP)
 
     db.initApp(app)
     return app
