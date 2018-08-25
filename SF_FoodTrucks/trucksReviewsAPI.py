@@ -61,6 +61,22 @@ def TruckReview():
         return 'Review submitted successfully', 200
 
 
+@reviewsBP.route('/GetTruckReviews', methods=['GET'])
+def TruckReviews():
+    db = getDB()
+    truckID = request.args.get('truckID', type=int)
+    if truckID is None:
+        return 'Bad request, missing or wrong passed arguments', 400
+
+    response = {'id': truckID, 'likes': 0, 'dislikes': 0}
+    truckReviews = db.execute('SELECT * FROM TrucksReviews WHERE id = ?', (truckID,)).fetchone()
+    if truckReviews is not None:
+        response['likes'] = truckReviews['likes']
+        response['dislikes'] = truckReviews['dislikes']
+
+    return jsonify(response), 200
+
+
 @reviewsBP.route('/GetBestTrucks', methods=['GET'])
 def GetBestTrucks():
     db = getDB()
