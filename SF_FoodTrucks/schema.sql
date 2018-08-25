@@ -1,7 +1,16 @@
 DROP TABLE IF EXISTS Users;
+DROP TABLE IF EXISTS TrucksReviews;
 
 CREATE TABLE Users (
   ID INTEGER PRIMARY KEY AUTOINCREMENT,
   username TEXT UNIQUE NOT NULL,
-  password TEXT NOT NULL
+  password TEXT NOT NULL,
+  trucksLikes TEXT,
+  trucksDislikes TEXT
+);
+
+CREATE TABLE TrucksReviews (
+  ID INTEGER PRIMARY KEY AUTOINCREMENT,
+  likes INTEGER,
+  dislikes INTEGER
 );
