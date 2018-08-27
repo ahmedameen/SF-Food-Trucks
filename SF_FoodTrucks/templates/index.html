@@ -2,9 +2,15 @@
 
 {% block content %}
 
-<div class="row" style="height:100%; width:100% ">
-    <div id="map" class="col-md-6" style="height:85%; margin-top: 10px"> </div>
+<div class="row" style="height:100%; width:100%">
+    <div id="map" class="col-md-8" style="height:85%; width=100%;margin-top:10px"></div>
+    <div class="col-md-4" style="height:85%; width=100%">
+        <h3>Top Food Trucks</h3>
+        <ol id="topTrucksList">
+        </ol>
+    </div>
 </div>
+
 
 <script src="/static/scripts/mapsManager.js"></script>
 <script src="https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyBcRA0ZNg13R7FgrYDw-x3i1LNPJNFdq4E&&libraries=places&callback=initMap"></script>

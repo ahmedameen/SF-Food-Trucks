@@ -7,7 +7,7 @@ var infoWindow;
 
 var foodTruckIconURL = '/static/icons/food-truck-32.png';
 var foodCartIconURL = '/static/icons/food-cart-32.png';
-
+getTopTrucksIDs()
 function initMap() {
     var mapOptions = {
         center: new google.maps.LatLng(sfLat, sfLng),
@@ -74,39 +74,44 @@ function getFoodTruckNearLocation(locationLat, locationLng) {
 function addMarkersToFoodTruckLocations(data) {
     var trucks = JSON.parse(data);
     for (var i = 0; i < trucks.length; i++) {
-        var truckLocation = { lat: trucks[i].location.coordinates[1], lng: trucks[i].location.coordinates[0] };
-        var iconURL = trucks[i].facilitytype == 'Push Cart' ? foodCartIconURL : foodTruckIconURL;
-        var truckName = trucks[i].applicant;
+      addMarkerToFoodTruckLocation(trucks[i])
+    }
+}
+
+function addMarkerToFoodTruckLocation(truck){
+ var truckLocation = { lat: truck.location.coordinates[1], lng: truck.location.coordinates[0] };
+ var iconURL = truck.facilitytype == 'Push Cart' ? foodCartIconURL : foodTruckIconURL;
+        var truckName = truck.applicant;
         allReviews = $.ajax({
           method: 'GET',
-          url: '/reviews/GetTruckReviews?truckID='+trucks[i].objectid,
+          url: '/reviews/GetTruckReviews?truckID='+truck.objectid,
           async: false
         })
         allReviewsJson = JSON.parse(allReviews.responseText)
-        trucks[i].likes = allReviewsJson.likes
-        trucks[i].dislikes = allReviewsJson.dislikes
+        truck.likes = allReviewsJson.likes
+        truck.dislikes = allReviewsJson.dislikes
 
         userReview = $.ajax({
           method: 'GET',
-          url: '/reviews/TruckReview?truckID='+trucks[i].objectid,
+          url: '/reviews/TruckReview?truckID='+truck.objectid,
           async: false
         })
 
         if (userReview.status != 200)
         {
-           trucks[i].userReview = 'Empty'
+           truck.userReview = 'Empty'
         }
         else
         {
             userReviewJson = JSON.parse(userReview.responseText)
-            trucks[i].userReview = userReviewJson.userReview
+            truck.userReview = userReviewJson.userReview
         }
 
-        var markerInfo = trucks[i];
+        var markerInfo = truck;
 
         addMarker(truckLocation, truckName, iconURL, markerInfo, handleMarkerClickEvent);
-    }
 }
+
 
 function handleMarkerClickEvent() {
     truckID = this.info.objectid;
@@ -116,37 +121,83 @@ function handleMarkerClickEvent() {
             + '<strong>Food Items: </strong>' + this.info.fooditems + '<br>'
             + '<strong>Working Hours: </strong>' + this.info.dayshours + '<br>'
             + '<strong>Likes: </strong>' + this.info.likes + ' ' +'<strong>Dislikes: </strong>' + this.info.dislikes + '<br>'
-            + '<input id = "reviewBtn" type="button" value="Like" onclick="func('+truckID+');"/>';
+            + '<input id = "likeBtn" type="button" value="Like" onclick="submitReview('+truckID+', "like");"/> '
+            + '<input id = "dislikeBtn" type="button" value="Dislike" onclick="submitReview('+truckID+', "dislike");"/>';
             infoWindow.setContent(windowContent);
     infoWindow.open(this.getMap(), this);
 
     if (this.info.userReview == 'Like')
     {
-        $('#reviewBtn').attr('value', 'Dislike')
-        $('#reviewBtn').attr('style', 'color:red')
+        $('#likeBtn').attr('style', 'color:green')
+        $('#dislikeBtn').attr('style', 'color:black')
     }
     else if (this.info.userReview == 'Dislike')
     {
-        $('#reviewBtn').attr('value', 'Like')
-        $('#reviewBtn').attr('style', 'color:greed')
+        $('#dislikeBtn').attr('style', 'color:red')
+        $('#likeBtn').attr('style', 'color:black')
     }
 
 
 }
 
-function func(truckID){
-btnVal = $('#reviewBtn').attr('value')
-$.post('/reviews/TruckReview?truckID='+truckID, data={'review':btnVal}, toggleReviewButton).fail(function() {alert( "Please log in before submitting your review." );})
+function submitReview(truckID, review){
+$.post('/reviews/TruckReview?truckID='+truckID, data={'review':review}, toggleReviewButtons(review)).fail(function() {alert( "Please log in before submitting your review." );})
 }
 
-function toggleReviewButton(){
+function toggleReviewButtons(review){
 btnVal = $('#reviewBtn').attr('value')
-if (btnVal == 'Like'){
-$('#reviewBtn').attr('value', 'Dislike')
-$('#reviewBtn').attr('style', 'color:red')
+if (review == 'Like'){
+$('#likeBtn').attr('style', 'color:green')
+$('#dislikeBtn').attr('style', 'color:black')
 }
 else{
-$('#reviewBtn').attr('value', 'Like')
-$('#reviewBtn').attr('style', 'color:green')
+$('#dislikeBtn').attr('style', 'color:red')
+$('#likeBtn').attr('style', 'color:black')
 }
 }
+
+
+function getTopTrucksIDs(){
+$.get('reviews/GetBestTrucks', {'top':10}, getTopTrucksData)
+}
+
+function getTopTrucksData(data){
+ trucks = JSON.parse(data);
+ topTrucksList = document.getElementById('topTrucksList')
+ for (var i = 0; i < trucks.length; i++){
+    item = document.createElement('li')
+    item.id = 'truck' + trucks[i].id;
+    item.setAttribute('data-likes', trucks[i].likes);
+    item.setAttribute('data-dislikes', trucks[i].dislikes);
+    topTrucksList.appendChild(item)
+  }
+
+for(var i = 0; i< trucks.length; i++){
+ $.get('/foodtrucks/GetFoodTruck', {'truckID': trucks[i].id}, updateTopTrucksData)
+}
+
+}
+
+function updateTopTrucksData(truck){
+  var item = $('#truck' + truck.objectid)
+  var likes = item.attr('data-likes');
+  var dislikes = item.attr('data-dislikes');
+  item.html('<a onclick="showOneTruck(this);">'+ truck.applicant + '</a>'+ ' <small>('+likes+' Likes  '+dislikes+ ' Dislikes)</small>' +'<br>'
+            + truck.fooditems);
+}
+
+function showOneTruck(e){
+  var truckID = e.parentNode.id.substring(5)
+  $.get('/foodtrucks/GetFoodTruck', {'truckID': parseInt(truckID)},
+  function (truck){
+  var truckLocation = { lat: truck.location.coordinates[1], lng: truck.location.coordinates[0] };
+  map.setCenter(truckLocation);
+  map.setZoom(14);
+  removeAllMarkers();
+  addMarkerToFoodTruckLocation(truck);
+  });
+}
+
+
+
+
