@@ -6,6 +6,18 @@ foodTrucksBP = Blueprint('foodtrucks', __name__, url_prefix='/foodtrucks')
 
 @foodTrucksBP.route('/GetFoodTrucksNearLocation', methods=['GET'])
 def GetFoodTrucksNearLocation():
+    """
+           Summary:
+               Get food trucks near a location specified by latitude and longitude.
+           Paramters:
+           locationLat: the latitude of the location.
+           locationLng: the longitude of the location.
+           maxDistanceInMeters: the maximum distance between the truck and the location.
+           Optional Paramters:
+           limit: to limit the number of trucks returned
+           Returns:
+               Array of json objects representing the trucks, the truck fields details are discussed in the API documentation.
+    """
     apiEndPoint = 'https://data.sfgov.org/resource/6a9r-agq8.json'
     appToken = current_app.config['SF_APP_TOKEN']
     locationLat = request.args.get('locationLat', type=float)
@@ -24,6 +36,14 @@ def GetFoodTrucksNearLocation():
 
 @foodTrucksBP.route('/GetFoodTruck', methods=['GET'])
 def GetFoodTruck():
+    """
+               Summary:
+                   Get a food truck specified by ID.
+               Paramters:
+               truckID: the ID of the truck.
+               Returns:
+                   Json object representing the truck, the truck fields details are discussed in the API documentation.
+    """
     apiEndPoint = 'https://data.sfgov.org/resource/6a9r-agq8.json'
     appToken = current_app.config['SF_APP_TOKEN']
     truckID = request.args.get('truckID', type=int)
