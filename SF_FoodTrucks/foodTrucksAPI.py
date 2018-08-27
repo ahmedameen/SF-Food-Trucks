@@ -37,12 +37,12 @@ def GetFoodTrucksNearLocation():
 @foodTrucksBP.route('/GetFoodTruck', methods=['GET'])
 def GetFoodTruck():
     """
-               Summary:
-                   Get a food truck specified by ID.
-               Paramters:
-               truckID: the ID of the truck.
-               Returns:
-                   Json object representing the truck, the truck fields details are discussed in the API documentation.
+        Summary:
+            Get a food truck specified by ID.
+        Paramters:
+            truckID: the ID of the truck.
+        Returns:
+            Json object representing the truck, the truck fields details are discussed in the API documentation.
     """
     apiEndPoint = 'https://data.sfgov.org/resource/6a9r-agq8.json'
     appToken = current_app.config['SF_APP_TOKEN']
