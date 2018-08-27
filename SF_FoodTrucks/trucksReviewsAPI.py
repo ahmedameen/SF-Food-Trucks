@@ -81,7 +81,6 @@ def TruckReviews():
 def GetBestTrucks():
     db = getDB()
     topLimit = request.args.get('top', type=int)
-    print(topLimit)
     if topLimit is None:
         topLimit = 10
     topTrucksRows = db.execute('SELECT * FROM TrucksReviews ORDER BY likes-dislikes DESC LIMIT ?',
