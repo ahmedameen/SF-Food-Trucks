@@ -1,5 +1,5 @@
 import requests
-from flask import request, current_app, Blueprint
+from flask import request, current_app, Blueprint, json, jsonify
 
 foodTrucksBP = Blueprint('foodtrucks', __name__, url_prefix='/foodtrucks')
 
@@ -30,5 +30,6 @@ def GetFoodTruck():
     if truckID is None:
         return 'Bad request, missing or wrong passed arguments. Please review the API documentation for the correct format.', 400
     params = {'$$app_token': appToken, 'objectid': truckID}
-    req = requests.get(apiEndPoint, params)
-    return req.content, 200
+    res = requests.get(apiEndPoint, params)
+    trucks = json.loads(res.content)
+    return jsonify(trucks[0]), 200
