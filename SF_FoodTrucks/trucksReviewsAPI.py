@@ -98,7 +98,7 @@ def TruckReviews():
 def GetBestTrucks():
     """
         Summary:
-            Get best food trucks based on difference between likes and dislikes reviews.
+            Get best food trucks IDs based on difference between likes and dislikes reviews.
         Optional Paramters:
         top: to limit the result.
         Returns:
