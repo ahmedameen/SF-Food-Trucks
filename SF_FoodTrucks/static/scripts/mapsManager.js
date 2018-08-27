@@ -149,15 +149,14 @@ $.post('/reviews/TruckReview?truckID='+truckID, data={'review':'Dislike'}, toggl
 }
 
 function toggleReviewButtons(review){
-btnVal = $('#reviewBtn').attr('value')
-if (review == 'Like'){
-$('#likeBtn').attr('style', 'color:green')
-$('#dislikeBtn').attr('style', 'color:black')
-}
-else{
-$('#dislikeBtn').attr('style', 'color:red')
-$('#likeBtn').attr('style', 'color:black')
-}
+    if (review == 'Like'){
+        $('#likeBtn').attr('style', 'color:green')
+        $('#dislikeBtn').attr('style', 'color:black')
+    }
+    else {
+        $('#dislikeBtn').attr('style', 'color:red')
+        $('#likeBtn').attr('style', 'color:black')
+    }
 }
 
 
