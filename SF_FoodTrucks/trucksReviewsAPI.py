@@ -7,8 +7,18 @@ import json
 reviewsBP = Blueprint('reviews', __name__, url_prefix='/reviews')
 
 
+
 @reviewsBP.route('/TruckReview', methods=['GET', 'POST'])
 def TruckReview():
+    """
+        Summary:
+            Get/Post a review (Like/ Dislike) for a food truck specified by ID.
+        Paramters:
+        truckID: the ID of the truck to Get/Post review for.
+            review: 'Like' or 'Dislike'
+        Returns(Incase of Get Request):
+            'Like', 'Dislike' or 'Empty'
+    """
     userID = session.get('userID')
 
     if userID is None:
@@ -60,7 +70,14 @@ def TruckReview():
         db.commit()
         return 'Review submitted successfully', 200
 
-
+    """
+        Summary:
+            Get all reviews (number of Likes/ Dislikes) for a food truck specified by ID.
+        Paramters:
+        truckID: the ID of the truck to Get/Post review for.
+        Returns:
+            Json object with fields : 'id', 'likes' and 'dislikes'
+    """
 @reviewsBP.route('/GetTruckReviews', methods=['GET'])
 def TruckReviews():
     db = getDB()
@@ -79,6 +96,14 @@ def TruckReviews():
 
 @reviewsBP.route('/GetBestTrucks', methods=['GET'])
 def GetBestTrucks():
+    """
+        Summary:
+            Get best food trucks based on difference between likes and dislikes reviews.
+        Optional Paramters:
+        top: to limit the result.
+        Returns:
+            Array of json objects of the top best trucks with fields : 'id', 'likes' and 'dislikes'
+    """
     db = getDB()
     topLimit = request.args.get('top', type=int)
     if topLimit is None:
