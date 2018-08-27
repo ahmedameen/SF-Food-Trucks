@@ -121,8 +121,8 @@ function handleMarkerClickEvent() {
             + '<strong>Food Items: </strong>' + this.info.fooditems + '<br>'
             + '<strong>Working Hours: </strong>' + this.info.dayshours + '<br>'
             + '<strong>Likes: </strong>' + this.info.likes + ' ' +'<strong>Dislikes: </strong>' + this.info.dislikes + '<br>'
-            + '<input id = "likeBtn" type="button" value="Like" onclick="submitReview('+truckID+', "like");"/> '
-            + '<input id = "dislikeBtn" type="button" value="Dislike" onclick="submitReview('+truckID+', "dislike");"/>';
+            + '<input id = "likeBtn" type="button" value="Like" onclick="submitLike('+truckID+')";/>'
+            + '<input id = "dislikeBtn" type="button" value="Dislike" onclick="submitDislike('+truckID+')";/>';
             infoWindow.setContent(windowContent);
     infoWindow.open(this.getMap(), this);
 
@@ -140,8 +140,12 @@ function handleMarkerClickEvent() {
 
 }
 
-function submitReview(truckID, review){
-$.post('/reviews/TruckReview?truckID='+truckID, data={'review':review}, toggleReviewButtons(review)).fail(function() {alert( "Please log in before submitting your review." );})
+function submitLike(truckID){
+$.post('/reviews/TruckReview?truckID='+truckID, data={'review':'Like'}, toggleReviewButtons('Like')).fail(function(xhr, status, error) {alert(xhr.responseText);})
+}
+
+function submitDislike(truckID){
+$.post('/reviews/TruckReview?truckID='+truckID, data={'review':'Dislike'}, toggleReviewButtons('Dislike')).fail(function(xhr, status, error) {alert(xhr.responseText);})
 }
 
 function toggleReviewButtons(review){
