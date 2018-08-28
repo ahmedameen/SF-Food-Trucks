@@ -105,7 +105,6 @@ venv.bak/
 
 # python virtual environment
 /flaskEnv
-/flaskEnvUbunto
 
 # visual studio project files
 /*.sln
