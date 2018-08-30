@@ -108,8 +108,9 @@ def GetBestTrucks():
     topLimit = request.args.get('top', type=int)
     if topLimit is None:
         topLimit = 10
-    topTrucksRows = db.execute('SELECT * FROM TrucksReviews ORDER BY likes-dislikes DESC LIMIT ?',
-                               (topLimit,)).fetchall()
+    topTrucksRows = db.execute(
+        'SELECT * FROM TrucksReviews WHERE (likes-dislikes) > 0 ORDER BY likes-dislikes DESC LIMIT ?',
+        (topLimit,)).fetchall()
     topTrucks = [{'id': truckRow['id'], 'likes': truckRow['likes'], 'dislikes': truckRow['dislikes']} for truckRow in
                  topTrucksRows]
     return json.dumps(topTrucks), 200

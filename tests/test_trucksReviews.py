@@ -107,6 +107,8 @@ def test_sendSameReviewTwice(client, auth):
 
 def test_getBestTrucks(client, auth):
     reviews = [{'username': 'ameen', 'password': 'ameenPassword', 'truckID': 2, 'review': 'Like'},
+               {'username': 'elfiky', 'password': 'elfikyPassword', 'truckID': 2, 'review': 'Like'},
+               {'username': 'mohamed', 'password': 'mohamedPassword', 'truckID': 4, 'review': 'Like'},
                {'username': 'ahmed', 'password': 'ahmedPassword', 'truckID': 3, 'review': 'Like'},
                {'username': 'ameen', 'password': 'ameenPassword', 'truckID': 3, 'review': 'Like'},
                {'username': 'mohamed', 'password': 'mohamedPassword', 'truckID': 3, 'review': 'Dislike'},
@@ -114,7 +116,7 @@ def test_getBestTrucks(client, auth):
                {'username': 'elfiky', 'password': 'elfikyPassword', 'truckID': 1, 'review': 'Dislike'},
                {'username': 'ahmed', 'password': 'ahmedPassword', 'truckID': 1, 'review': 'Dislike'}]
 
-    trucksOrder = [2, 3, 1]
+    trucksOrder = [2, 4]
     i = 0
     for i in range(len(reviews)):
         auth.login(reviews[i]['username'], reviews[i]['password'])
@@ -125,7 +127,7 @@ def test_getBestTrucks(client, auth):
 
     assert res.status_code == 200
     retOrder = json.loads(res.data.decode())
-    assert len(retOrder) == 3
+    assert len(retOrder) == len(trucksOrder)
     j = 0
     for j in range(len(retOrder)):
         assert retOrder[j]['id'] == trucksOrder[j]
