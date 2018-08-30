@@ -9,13 +9,13 @@ def app():
     appContext = app.app_context()
     appContext.push()
     initDBForTesting()
-    yield app
+    return app
 
 
 @pytest.fixture
 def client(app):
     client = app.test_client()
-    yield client
+    return client
 
 
 @pytest.fixture
