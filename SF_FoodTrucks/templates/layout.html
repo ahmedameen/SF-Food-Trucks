@@ -39,6 +39,19 @@
         </div>
     </div>
 
+{% with errors = get_flashed_messages(category_filter=["error"]) %}
+{% if errors %}
+<div class="alert-message block-message error" style="margin-top: 10px">
+    <a class="close" href="#">×</a>
+    <ul>
+        {%- for msg in errors %}
+        <li style="color:red">{{ msg }}</li>
+        {% endfor -%}
+    </ul>
+</div>
+{% endif %}
+{% endwith %}
+
     <div class="container body-content" style="height:100%; width:100% ">
         {% block content %}{% endblock %}
         <hr />
