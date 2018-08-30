@@ -1,8 +1,9 @@
 sfLat = 37.773972
 sfLng = -122.431297
 var map;
-var markers = [];
-var currentLocation = { lat: sfLat, lng: sfLng };
+var markers = {};
+var markersIDs = []
+
 var infoWindow;
 
 var foodTruckIconURL = '/static/icons/food-truck-32.png';
@@ -28,7 +29,7 @@ function initMap() {
     infoWindow = new google.maps.InfoWindow({ maxWidth : '250'});
 }
 
-function addMarker(location, locationTitle, iconURL, markerInfo, OnClickEventHandler) {
+function addMarker(location, locationTitle, iconURL, markerInfo, markerID, OnClickEventHandler) {
     var marker = new google.maps.Marker({
         position: location,
         map: map,
@@ -37,14 +38,16 @@ function addMarker(location, locationTitle, iconURL, markerInfo, OnClickEventHan
     });
     marker.info = markerInfo;
     marker.addListener('click', OnClickEventHandler);
-    markers.push(marker);
+    markers[markerID] = marker;
+    markersIDs.push(markerID);
 }
 
 function removeAllMarkers() {
-    for (var i = 0; i < markers.length; i++) {
-        markers[i].setMap(null);
+    for (var i = 0; i < markersIDs.length; i++) {
+        markers[markersIDs[i]].setMap(null);
     }
-    markers = [];
+    markers = {};
+    markersIDs = [];
 }
 
 function createSearchBox() {
@@ -59,7 +62,7 @@ function createSearchBox() {
 function handleLocationChanged() {
     removeAllMarkers();
     map.setZoom(14);
-    currentLocation = this.getPlaces()[0].geometry.location;
+    var currentLocation = this.getPlaces()[0].geometry.location;
     var placeTitle = this.getPlaces()[0].name;
     map.setCenter(currentLocation);
     addMarker(currentLocation, placeTitle);
@@ -82,36 +85,22 @@ function addMarkerToFoodTruckLocation(truck){
  var truckLocation = { lat: truck.location.coordinates[1], lng: truck.location.coordinates[0] };
  var iconURL = truck.facilitytype == 'Push Cart' ? foodCartIconURL : foodTruckIconURL;
         var truckName = truck.applicant;
-        allReviews = $.ajax({
-          method: 'GET',
-          url: '/reviews/GetTruckReviews?truckID='+truck.objectid,
-          async: false
-        })
-        allReviewsJson = JSON.parse(allReviews.responseText)
-        truck.likes = allReviewsJson.likes
-        truck.dislikes = allReviewsJson.dislikes
-
-        userReview = $.ajax({
-          method: 'GET',
-          url: '/reviews/TruckReview?truckID='+truck.objectid,
-          async: false
-        })
-
-        if (userReview.status != 200)
-        {
-           truck.userReview = 'Empty'
-        }
-        else
-        {
-            userReviewJson = JSON.parse(userReview.responseText)
-            truck.userReview = userReviewJson.userReview
-        }
-
         var markerInfo = truck;
 
-        addMarker(truckLocation, truckName, iconURL, markerInfo, handleMarkerClickEvent);
+        addMarker(truckLocation, truckName, iconURL, markerInfo, truck.objectid, handleMarkerClickEvent);
+
+        $.get('/reviews/GetTruckReviews', {'truckID':truck.objectid}, function (data){addTruckReviews(data, truck.objectid)})
+        $.get('/reviews/TruckReview', {'truckID':truck.objectid},function(data){addTruckUserReview(data, truck.objectid)});
 }
 
+function addTruckReviews(data, markerID){
+markers[markerID].info.likes = data.likes;
+markers[markerID].info.dislikes = data.dislikes;
+}
+
+function addTruckUserReview(data, markerID){
+markers[markerID].info.userReview = data.userReview;
+}
 
 function handleMarkerClickEvent() {
     truckID = this.info.objectid;
