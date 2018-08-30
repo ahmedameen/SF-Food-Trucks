@@ -22,7 +22,7 @@ def TruckReview():
     userID = session.get('userID')
 
     if userID is None:
-        return 'Unautharized, please login first.', 401
+        return 'Please login first.', 401
 
     db = getDB()
     userRow = db.execute('SELECT * FROM Users WHERE id = ?', (userID,)).fetchone()
