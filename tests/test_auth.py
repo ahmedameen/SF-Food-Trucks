@@ -3,6 +3,10 @@ from werkzeug.security import check_password_hash
 from SF_FoodTrucks import db
 from flask import session
 
+'''
+Remove catching flashed messages from HTML template first.
+'''
+
 def test_register(client, auth):
     username = 'dummyUsername'
     password = 'dummyPassword'
