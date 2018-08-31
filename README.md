@@ -81,8 +81,8 @@ This is a food trucks finder in San Fransisco. This project was done in two week
 * Framework: Flask.  
   * Why Flask? I had no experience with Flask before I use ASP.NET for backend so I decided to work with a new framework. I went with Flask because it's suitable for small web applications and can be learnt quickly.  
 * Database: SQLite.  
-  * Why SQLite? In this application I used a SQLite database to store simple data about the users/ food trucks. The detailed food trucks data are retrieved from [DataSF API documentation](https://data.sfgov.org/Economy-and-Community/Mobile-Food-Facility-Permit/rqzj-sfat) so SQLite was a quick and suitable solution.
-
+  * Why SQLite? In this application I used a SQLite database to store simple data about the users/ food trucks. The detailed food trucks data are retrieved from [DataSF API](https://data.sfgov.org/Economy-and-Community/Mobile-Food-Facility-Permit/rqzj-sfat) so SQLite was a quick and suitable solution.
+* APIs:  [DataSF API](https://data.sfgov.org/Economy-and-Community/Mobile-Food-Facility-Permit/rqzj-sfat) is used to access the food trucks dataset. 
 ### For Frontend:
 * Javascript.  
 * Google maps API.  
