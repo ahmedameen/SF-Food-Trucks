@@ -1,5 +1,5 @@
 # SF-Food-Trucks
-![WebAppScreenshot](https://lh4.googleusercontent.com/Nu0ZGBXi8wWQyPWUWFvtXMICVRZ9co0iF0_-XI_x3XAmiQa4iCHu1SvxBxDy2-M0VRwuQAr2VsyEhw=w1301-h678-rw)
+![WebAppScreenshot](https://lh4.googleusercontent.com/Nu0ZGBXi8wWQyPWUWFvtXMICVRZ9co0iF0_-XI_x3XAmiQa4iCHu1SvxBxDy2-M0VRwuQAr2VsyEhw=w1301-h678-rwmedame)
 This is a food trucks finder in San Fransisco. This project was done in two weeks with around 38 hours of coding as part of Uber backend coding challenges. The app is hosted and can be found [here](https://ahmedameen.pythonanywhere.com/).  
 ## Web App Features
 * Search for a location using google maps search box.
@@ -33,7 +33,7 @@ This is a food trucks finder in San Fransisco. This project was done in two week
       * dayshours (text): the abbreviated text of the food truck working hours.
       * facilitytype (text): 'truck' or 'push cart'.              
     * Errors:
-      * Status code: 400
+      * Status code: 400 bad request
       * Response: 'Bad request, missing or wrong passed arguments. Please review the API documentation for the correct format.' 
 * Get food truck information specified by ID API.
   * End Point: '/foodtrucks/GetFoodTruck'
@@ -44,7 +44,7 @@ This is a food trucks finder in San Fransisco. This project was done in two week
     * Status code: 200 ok
     * Response: truck object in json format.
   * Errors:
-    * Status code: 400
+    * Status code: 400 bad request
     * Response: 'Bad request, missing or wrong passed arguments. Please review the API documentation for the correct format.' 
 
 * Get all users reviews for a food truck API.
@@ -59,7 +59,7 @@ This is a food trucks finder in San Fransisco. This project was done in two week
       * likes (integer number): number of likes this truck received. 
       * dislikes (integer number): number of dislikes this truck received.
   * Errors:
-      * Status code: 400
+      * Status code: 400 bad request
       * Response: 'Bad request, missing or wrong passed arguments. Please review the API documentation for the correct format.' 
       
 * Get top food trucks ID's based on users reviews API.
