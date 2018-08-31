@@ -71,7 +71,7 @@ function handleLocationChanged() {
 
 
 function getFoodTruckNearLocation(locationLat, locationLng) {
-    $.get('/foodtrucks/GetFoodTrucksNearLocation', { 'locationLat': locationLat, 'locationLng': locationLng, 'maxDistanceInMeters': 750 }, addMarkersToFoodTruckLocations)
+    $.get('/foodtrucks/GetFoodTrucksNearLocation', { 'locationLat': locationLat, 'locationLng': locationLng, 'maxDistanceInMeters': 1000 }, addMarkersToFoodTruckLocations)
 }
 
 function addMarkersToFoodTruckLocations(data) {
