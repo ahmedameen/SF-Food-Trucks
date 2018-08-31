@@ -1,5 +1,5 @@
 # SF-Food-Trucks
-![WebAppScreenshot](https://lh4.googleusercontent.com/Nu0ZGBXi8wWQyPWUWFvtXMICVRZ9co0iF0_-XI_x3XAmiQa4iCHu1SvxBxDy2-M0VRwuQAr2VsyEhw=w1301-h678-rwmedame)
+![WebAppScreenshot](https://i.imgur.com/Z18RjKj.png)
 This is a food trucks finder in San Fransisco. This project was done in two weeks with around 38 hours of coding as part of Uber backend coding challenges. The app is hosted and can be found [here](https://ahmedameen.pythonanywhere.com/).  
 ## Web App Features
 * Search for a location using google maps search box.
