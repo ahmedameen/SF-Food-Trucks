@@ -1,5 +1,5 @@
 # SF-Food-Trucks
-![AppScreenshot](https://lh5.googleusercontent.com/1hZzI0e7iWAUz3flm3-4xwJrmlYASUDakLtLZekjVE_MzbX_zje4PPt2kjZrd0uOjemL5tJzt2LMcbIu71hr=w1301-h670)
+![WebAppScreenshot](https://lh5.googleusercontent.com/1hZzI0e7iWAUz3flm3-4xwJrmlYASUDakLtLZekjVE_MzbX_zje4PPt2kjZrd0uOjemL5tJzt2LMcbIu71hr=w1301-h670)
 This is a food trucks finder in San Fransisco. This project was done in two weeks with around 38 hours of coding as part of Uber backend coding challenges. The app is hosted and can be found [here](https://ahmedameen.pythonanywhere.com/).  
 ## Web App Features
 * Search for a location using google maps search box.
@@ -11,7 +11,7 @@ This is a food trucks finder in San Fransisco. This project was done in two week
 ## API Features
 * Get food trucks near a specific location in San Fransisco.
 * Get food truck information specified by ID.
-* Get all users reviews for a food truck.
+* Get all users reviews for a food truck specified by ID.
 * Get top food trucks IDs based on users reviews.
 ## API Documentation
 * Get food trucks near a specific location in San Fransisco API.
@@ -24,14 +24,15 @@ This is a food trucks finder in San Fransisco. This project was done in two week
     * limit (integer number) (optional): to limit the number of returned food trucks.
   * Returns:
     * Status code: 200 ok
-    * Response: array of json truck object with the following fields:
-      * objectid: the id of the food truck.
-      * address: the address of the food truck.
-      * fooditems: the food items the food trucks sells.
-      * latitude: the latitude of the food truck location.
-      * longitude: the longitude of the food truck location.  
-      For the complete fields refer to the [DataSF API documentation](https://data.sfgov.org/Economy-and-Community/Mobile-Food-Facility-Permit/rqzj-sfat).
-   * Errors:
+    * Response: array of json truck object with the following fields: 
+      * objectid (integer number): the id of the food truck.
+      * address (text): the address of the food truck.
+      * fooditems (text): the food items the food trucks sells.
+      * latitude (decimal number): the latitude of the food truck location.
+      * longitude (decimal number): the longitude of the food truck location.
+      * dayshours (text): the abbreviated text of the food truck working hours.
+      * facilitytype (text): 'truck' or 'push cart'.              
+    * Errors:
       * Status code: 400
       * Response: 'Bad request, missing or wrong passed arguments. Please review the API documentation for the correct format.' 
 * Get food truck information specified by ID API.
