@@ -39,6 +39,7 @@
         </div>
     </div>
 
+{% if not config['TESTING'] %}
 {% with errors = get_flashed_messages(category_filter=["error"]) %}
 {% if errors %}
 <div class="alert-message block-message error" style="margin-top: 10px">
@@ -51,6 +52,7 @@
 </div>
 {% endif %}
 {% endwith %}
+{% endif %}
 
     <div class="container body-content" style="height:100%; width:100% ">
         {% block content %}{% endblock %}
