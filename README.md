@@ -94,4 +94,4 @@ This is a food trucks finder in San Fransisco. This project was done in two week
 * Store all the food trucks info in the database instead of retrieving them using DataSF API to remove the dependency and update the database periodically to add the new trucks.
 * Add verification steps in user registration for security.
 * Add additional ways to choose a location other than the search box like choosing from the map directly or geolocalizing. 
-* Add personalized recommendations for food trucks for each user user reviews and user location.
+* Add personalized recommendations for food trucks for each user based on user reviews and user location.
